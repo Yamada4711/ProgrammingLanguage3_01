@@ -19,7 +19,7 @@ Draw::Draw()
 
 Draw::~Draw()
 {
-	
+	DeleteGraph(gHandle);
 }
 
 
@@ -86,20 +86,23 @@ int DrawThorns()
 /// <summary>
 /// 矩形を描く
 /// </summary>
+/// <param name="x">矩形中央のｘ座標</param>
+/// <param name="y">矩形中央のｙ座標</param>
+/// <param name="width">横幅の半分</param>
+/// <param name="height">縦幅の半分</param>
 /// <returns></returns>
-int DrawRectangle(const int x1 = 0, const int y1 = RATIO_Y * 60)
+int DrawRectangle(const bool drawBox, const int x = RATIO_X * 15, const int y = RATIO_Y * 55, const int width = RATIO_X * 15 , const int height = RATIO_Y * 5)
 {
-	// 矩形の色を指定する（青色）（固定）
-	const unsigned int color = GetColor(0, 0, 255);
+	if (drawBox)
+	{
+		// 矩形の色を指定する（青色）（固定）
+		const unsigned int color = GetColor(0, 0, 255);
 
-	// 矩形の横幅を指定（固定）
-	const int width = RATIO_X * 30;
-	// 矩形の縦幅を指定（固定）
-	const int height = RATIO_Y * 10;
-
-	// 矩形を描画する座標を指定する(固定)
-	const int x2 = x1 + width - 1, y2 = y1 + height - 1;
-	DrawBox(x1, y1, x2, y2, color, TRUE);
+		// 矩形を描画する座標を指定する(固定)
+		const int x1 = x - width, y1 = y - height;
+		const int x2 = x + width - 1, y2 = y + height - 1;
+		DrawBox(x1, y1, x2, y2, color, TRUE);
+	}
 	return 0;
 }
 
@@ -110,41 +113,48 @@ int DrawRectangle(const int x1 = 0, const int y1 = RATIO_Y * 60)
 /// <param name="y"></param>
 /// <param name="gHandle"></param>
 /// <returns></returns>
-int DrawPlayerCharacter(const int gHandle, const int x = SCREEN_SIZE_X / 2, const int y = SCREEN_SIZE_Y / 2 - RATIO_X * RATIO_Y * 2)
+int DrawPlayerCharacter(const int gHandle, const bool drawPlayer, const int x = SCREEN_SIZE_X / 2, const int y = SCREEN_SIZE_Y / 2 - RATIO_X * RATIO_Y * 2, const int halfSize = RATIO_X * RATIO_Y * 2)
 {
-	// 画像読み込みがちゃんとできているかどうか確認する
-	if (gHandle == -1)
+	if (drawPlayer)
 	{
-		printfDx("エラー：グラフィックデータの読み込みに失敗しているよ");
-		return ERROR_OCCURRED;
+		// 画像読み込みがちゃんとできているかどうか確認する
+		if (gHandle == -1)
+		{
+			printfDx("エラー：グラフィックデータの読み込みに失敗しているよ");
+			return ERROR_OCCURRED;
+		}
+
+		// プレイヤーを描画する位置
+		const int x1 = x - halfSize, y1 = y - halfSize,
+			x2 = x + halfSize, y2 = y + halfSize;
+
+		DrawExtendGraph(x1, y1, x2, y2, gHandle, TRUE);
 	}
-
-	// プレイヤーの半分のサイズ
-	const int halfSize = RATIO_X * RATIO_Y * 2;
-
-	// プレイヤーを描画する位置
-	const int x1 = x - halfSize, y1 = y - halfSize,
-		x2 = x + halfSize, y2 = y + halfSize;
-
-	DrawExtendGraph(x1, y1, x2, y2, gHandle, TRUE);
-
 	return 0;
 }
 
-int Draw::DrawingScreen()
+int Draw::DrawingScreen(const bool drawBox1, const bool drawBox2,
+	const int box1X, const int box1Y, const int Box2X, const int box2Y,
+	const bool drawPlayer, const int playerX, const int playerY)
 {
 	// とげを描く
 	if (DrawThorns() != 0) return ERROR_OCCURRED;
 
 	// 矩形1を描く
-	if (DrawRectangle() != 0) return ERROR_OCCURRED;
+	if (drawBox1)
+	{
+		if (DrawRectangle(drawBox1, box1X, box1Y) != 0) return ERROR_OCCURRED;
+	}
 	// 矩形2を描く
-	if (DrawRectangle(SCREEN_SIZE_X - (RATIO_X * 30), RATIO_Y * 30) != 0) return ERROR_OCCURRED;
+	/*if (drawBox2)
+	{
+		if (DrawRectangle(drawBox2, Box2X, box2Y) != 0) return ERROR_OCCURRED;
+	}*/
 	// 矩形3を描く
-	if (DrawRectangle(SCREEN_SIZE_X / 2 - RATIO_X * 15, SCREEN_SIZE_Y / 2) != 0) return ERROR_OCCURRED;
+	if (DrawRectangle(true , SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2 + RATIO_Y * 5) != 0) return ERROR_OCCURRED;
 
 	// プレイヤーを描画する
-	if (DrawPlayerCharacter(gHandle) != 0) return ERROR_OCCURRED;
+	if (DrawPlayerCharacter(gHandle, drawPlayer, playerX, playerY) != 0) return ERROR_OCCURRED;
 
 	return 0;
 }

@@ -1,6 +1,9 @@
 #include "DxLib.h"
 #include "common.h"
 #include "draw.h"
+#include "box.h"
+#include "player.h"
+#include "ctime"
 
 /// <summary>
 /// エラーメッセージを表示し
@@ -35,7 +38,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // 描画先を表画面にする
     SetDrawScreen(DX_SCREEN_FRONT);
 
+    srand((unsigned int)time(NULL));
+
     Draw draw;
+
+    Box box1, box2;
+
+    Player player;
 
     // ゲームの処理を行う
     while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
@@ -45,8 +54,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ClearDrawScreen();
         // 描画先を裏画面にする
         SetDrawScreen(DX_SCREEN_BACK);
+
+        box1.ManagementBox();
+        box2.ManagementBox();
+
+        player.JudgeJump();
+        player.Fall();
+
         // エラーが起きたら強制終了する
-        if (draw.DrawingScreen() != 0)
+        if (draw.DrawingScreen(box1.GetDraw(), box2.GetDraw(),
+            box1.GetVector2X(), box1.GetVector2Y(), box2.GetVector2X(), box2.GetVector2Y(),
+            player.GetDraw(), player.GetVector2X(), player.GetVector2Y()) != 0)
         {
             // エラーメッセージを表示して
             // 五秒後にウインドウを閉じる
