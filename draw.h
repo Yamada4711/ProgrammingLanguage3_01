@@ -4,12 +4,13 @@ class Draw
 {
 public:
 	Draw();
-	~Draw();
+	virtual ~Draw();
+
 	/// <summary>
 	/// ‰æ–Ê‚ÉŠG‚ğ•`‚­ŠÖ”
 	/// </summary>
 	int DrawingScreen(const bool drawBox1, const bool drawBox2,
-		const int box1X, const int box1Y, const int Box2X, const int box2Y,
+		const int box1X, const int box1Y, const int box2X, const int box2Y,
 		const bool drawPlayer, const int playerX, const int playerY);
 
 private:

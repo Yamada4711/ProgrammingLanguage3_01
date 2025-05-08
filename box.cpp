@@ -2,21 +2,41 @@
 #include "box.h"
 #include "common.h"
 
-Box::Box()
+Box::Box(int countS)
 {
-	// 矩形はまだ生成されていないのでEMPTYを代入
-	state = EMPTY;
+	state = COUNT;
 
 	// デフォルトでは矩形は右に向かって動く、とする
 	moveLeft = false;
 
-	// デフォルトでは矩形を描画する
-	draw = true;
+	// デフォルトでは矩形を描画しない
+	draw = false;
+
+	// デフォルトではプレイヤーに触れていない
+	touchPlayer = false;
+
+	// 起動するまでの時間を代入
+	countStart = countS;
 }
 
 Box::~Box()
 {
 
+}
+
+int Box::CountStart()
+{
+	if (countStart > 0)
+	{
+		countStart--;
+	}
+	else if (countStart != -1)
+	{
+		state = EMPTY;
+		draw = true;
+		countStart = -1;
+	}
+	return 0;
 }
 
 int Box::ManagementBox()
@@ -128,6 +148,19 @@ int Box::EraseBox()
 	return 0;
 }
 
+int Box::SetTouchPlayer(bool touch)
+{
+	if (touch)
+	{
+		if (!touchPlayer)
+		{
+			touchPlayer = true;
+			state = VARTICAL_MOVEMENT;
+		}
+	}
+	return 0;
+}
+
 int Box::GetVector2X()
 {
 	return vector2.x;
@@ -141,4 +174,17 @@ int Box::GetVector2Y()
 bool Box::GetDraw()
 {
 	return draw;
+}
+
+std::tuple<int, int, int, int> Box::GetBoxCoordinate()
+{
+	// まずは左上座標から
+	int leftUpX = vector2.x - halfWidth;
+	int leftUpY = vector2.y - halfHeight;
+
+	// 次に右下座標
+	int rightDownX = vector2.x + halfWidth;
+	int rightDownY = vector2.y + halfHeight;
+
+	return std::forward_as_tuple(leftUpX, leftUpY, rightDownX, rightDownY);
 }

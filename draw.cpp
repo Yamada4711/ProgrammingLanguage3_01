@@ -134,7 +134,7 @@ int DrawPlayerCharacter(const int gHandle, const bool drawPlayer, const int x = 
 }
 
 int Draw::DrawingScreen(const bool drawBox1, const bool drawBox2,
-	const int box1X, const int box1Y, const int Box2X, const int box2Y,
+	const int box1X, const int box1Y, const int box2X, const int box2Y,
 	const bool drawPlayer, const int playerX, const int playerY)
 {
 	// ‚Æ‚°‚ð•`‚­
@@ -146,10 +146,10 @@ int Draw::DrawingScreen(const bool drawBox1, const bool drawBox2,
 		if (DrawRectangle(drawBox1, box1X, box1Y) != 0) return ERROR_OCCURRED;
 	}
 	// ‹éŒ`2‚ð•`‚­
-	/*if (drawBox2)
+	if (drawBox2)
 	{
-		if (DrawRectangle(drawBox2, Box2X, box2Y) != 0) return ERROR_OCCURRED;
-	}*/
+		if (DrawRectangle(drawBox2, box2X, box2Y) != 0) return ERROR_OCCURRED;
+	}
 	// ‹éŒ`3‚ð•`‚­
 	if (DrawRectangle(true , SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2 + RATIO_Y * 5) != 0) return ERROR_OCCURRED;
 

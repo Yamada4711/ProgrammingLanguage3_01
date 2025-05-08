@@ -1,11 +1,12 @@
 #pragma once
 #include "common.h"
+#include "box.h"
 
 class Player
 {
 public:
 	Player();
-	~Player();
+	virtual ~Player();
 
 
 	/// <summary>
@@ -13,6 +14,17 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	int JudgeJump();
+
+	/// <summary>
+	/// ‹éŒ`‚É’…’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©”»’è‚·‚é
+	/// </summary>
+	/// <returns></returns>
+	bool JudgeTouchBox(Box& box);
+
+	/// <summary>
+	/// ‹éŒ`‚ÉG‚ê‚½ó‘Ô‚Å‚Ì—‰º
+	/// </summary>
+	int TouchBoxFall();
 
 	/// <summary>
 	/// —‰º‚·‚éˆ—
@@ -42,7 +54,6 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	int Jump();
-
 
 private:
 	/// <summary>

@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     Draw draw;
 
-    Box box1, box2;
+    Box box1(0), box2(120); // 最初にboxを発生させるタイミングを指定
 
     Player player;
 
@@ -55,11 +55,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // 描画先を裏画面にする
         SetDrawScreen(DX_SCREEN_BACK);
 
+        box1.CountStart();
+        box2.CountStart();
+
+        // 当たり判定の確認
+        box1.SetTouchPlayer(player.JudgeTouchBox(box1));
+        box2.SetTouchPlayer(player.JudgeTouchBox(box2));
+
+        // 矩形を移動させる
         box1.ManagementBox();
         box2.ManagementBox();
 
-        player.JudgeJump();
+        // プレイヤーを落下させる
         player.Fall();
+        player.TouchBoxFall();
+
+        // スペースキーでジャンプする
+        if (CheckHitKey(KEY_INPUT_SPACE) == 1) player.JudgeJump();
+
+
 
         // エラーが起きたら強制終了する
         if (draw.DrawingScreen(box1.GetDraw(), box2.GetDraw(),
