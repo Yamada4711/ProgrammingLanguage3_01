@@ -51,6 +51,7 @@ int Box::ManagementBox()
 		}
 		else
 		{
+			touchPlayer = false;
 			state = LATERAL_MOVEMENT;
 		}
 		break;

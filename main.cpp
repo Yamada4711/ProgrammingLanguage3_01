@@ -45,11 +45,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     Box box1(0), box2(120); // 最初にboxを発生させるタイミングを指定
 
     Player player;
+    
+    // ジャンプボタンを押し続けた時間を計測する変数
+    int countPushJumpButton = 0;
 
     // ゲームの処理を行う
     while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 //    while(true)
     {
+        // プレイヤーの生存確認
+        player.JudgeDeath();
+
         // 画面を初期化する
         ClearDrawScreen();
         // 描画先を裏画面にする
@@ -66,15 +72,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         box1.ManagementBox();
         box2.ManagementBox();
 
-        // プレイヤーがジャンプ中じゃなければ落下させる
+
+        // プレイヤーがジャンプ中じゃなければ落下させる ( -1 = ジャンプしてない)
         if (player.Jump() == -1)
         {
+        }
             player.Fall();
             player.TouchBoxFall();
-        }
 
         // スペースキーでジャンプする
-        if (CheckHitKey(KEY_INPUT_SPACE) == 1) player.JudgeJump();
+        if (CheckHitKey(KEY_INPUT_SPACE) == 1)
+        {
+            countPushJumpButton++;
+        }
+        else if (countPushJumpButton > 0)
+        {
+            player.JudgeJump(countPushJumpButton);
+            countPushJumpButton = 0; // ボタンを押し続けた時間をリセットする
+        }
 
 
 

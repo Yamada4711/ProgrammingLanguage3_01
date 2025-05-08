@@ -13,7 +13,7 @@ public:
 	/// ジャンプの処理を続行可能かどうか判断する
 	/// </summary>
 	/// <returns></returns>
-	int JudgeJump();
+	int JudgeJump(const int countPushJumpButton);
 
 	/// <summary>
 	/// 矩形に着地しているかどうか判定する
@@ -52,6 +52,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	int Jump();
+	/// <summary>
+	/// プレイヤーの生存確認
+	/// </summary>
+	/// <returns></returns>
+	int JudgeDeath();
 
 private:
 
@@ -112,6 +117,11 @@ private:
 	/// ジャンプの処理を行う時間
 	/// </summary>
 	const int jumpCountMax = 30;
+
+	/// <summary>
+	/// ジャンプ力に掛ける数字
+	/// </summary>
+	int jumpPowerMultiplier = 1;
 
 	/// <summary>
 	/// 緩やかに落下する処理を行った回数をカウント

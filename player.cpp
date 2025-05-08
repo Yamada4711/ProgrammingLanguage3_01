@@ -21,8 +21,10 @@ int Player::Jump()
 	{
 		if (!jump) jump = true;
 
-		int jumpPower = 30;
-		jumpPower /= jumpCount + 1 / 5 + 1;
+		int jumpPower = 1 * jumpPowerMultiplier; // マリオっぽいジャンプにする
+		//printfDx("jumpPower : %d", jumpPower); // ジャンプ力を確認するためのやつ（消していい）
+		if (jumpPower > 100) jumpPower = 100; // ジャンプ力を制限する
+		jumpPower /= jumpCount + 1 / 5 + 1; // ジャンプ力が滑らかに減少するようにする
 		//// ジャンプ力は最低でも１になるようにする
 		if (jumpPower == 0) jumpPower++;
 		jumpCount++;
@@ -40,11 +42,12 @@ int Player::Jump()
 	return -1;
 }
 
-int Player::JudgeJump()
+int Player::JudgeJump(const int countPushJumpButton)
 {
-	if (!jump || state == JUMP)
+	if ((!jump || state == JUMP) && state != DEATH)
 	{
 		if (state != JUMP) state = JUMP;
+		jumpPowerMultiplier = countPushJumpButton;
 		Jump();
 	}
 	return 0;
@@ -55,7 +58,7 @@ int Player::Fall()
 	if (state == FALL)
 	{
 		int fallPower = 2;
-		if (fallCount < jumpCountMax)
+		/*if (fallCount < jumpCountMax)
 		{
 			fallPower /= (jumpCountMax - fallCount) / 5 + 1;
 			fallCount++;
@@ -63,7 +66,7 @@ int Player::Fall()
 		else
 		{
 			fallPower++;
-		}
+		}*/
 		vector2.y += fallPower;
 	}
 	else if (fallCount != 0) fallCount = 0;
@@ -84,31 +87,47 @@ bool Player::JudgeTouchBox(Box& box)
 
 	// 高さの当たり判定
 	// 横の当たり判定
-	// 空中ジャンプはありにしておく
-	if ((rightDownY <= boxLeftUpY + 2 && rightDownY >= boxLeftUpY - 2) &&
-		(leftUpX <= boxRightDownX - 2 && rightDownX >= boxLeftUpX + 2))
+	// ジャンプ動作中は当たり判定が発動しないようにする
+	// 空中ジャンプはありにしておく(二段ジャンプは禁止)
+	if ((rightDownY <= boxLeftUpY + 5 && rightDownY >= boxLeftUpY - 2) &&
+		(leftUpX <= boxRightDownX - 3 && rightDownX >= boxLeftUpX + 3) &&
+		state != JUMP && state != DEFAULTS)
 	{
 		if (jump)
 		{
 			jump = false;
-			printfDx("jump ; %d", jump);
+			//printfDx("jump ; %d", jump);
 		}
-		if (state != TOUCH_BOX && state != JUMP) state = TOUCH_BOX;
+		if (state != TOUCH_BOX)
+		{
+			state = TOUCH_BOX;
+		}
 		return true;
 	}
 	else
 	{
-		if (state == TOUCH_BOX) state = FALL;
+		//if (state == TOUCH_BOX) state = FALL;
 		return false;
 	}
 }
 
 int Player::TouchBoxFall()
 {
+	//printfDx("state = %d", state);
 	if (state == TOUCH_BOX)
 	{
 		const int fallPower = 1;
 		vector2.y += fallPower;
+	}
+	return 0;
+}
+
+int Player::JudgeDeath()
+{
+	if (vector2.y > SCREEN_SIZE_Y - RATIO_Y * 15)
+	{
+		state = DEATH;
+		printfDx("PlayerDeath");
 	}
 	return 0;
 }
