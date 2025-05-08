@@ -66,9 +66,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         box1.ManagementBox();
         box2.ManagementBox();
 
-        // プレイヤーを落下させる
-        player.Fall();
-        player.TouchBoxFall();
+        // プレイヤーがジャンプ中じゃなければ落下させる
+        if (player.Jump() == -1)
+        {
+            player.Fall();
+            player.TouchBoxFall();
+        }
 
         // スペースキーでジャンプする
         if (CheckHitKey(KEY_INPUT_SPACE) == 1) player.JudgeJump();

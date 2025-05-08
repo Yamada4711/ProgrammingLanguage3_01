@@ -47,13 +47,13 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool GetDraw();
-
-private:
 	/// <summary>
 	/// プレイヤーが上昇する処理
 	/// </summary>
 	/// <returns></returns>
 	int Jump();
+
+private:
 
 private:
 	/// <summary>
@@ -90,6 +90,8 @@ private:
 		FALL,
 		// とげに当たって死んだ
 		DEATH,
+		// デフォルト（ゲーム開始時のステート）
+		DEFAULTS,
 	};
 
 	/// <summary>

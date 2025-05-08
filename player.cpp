@@ -6,7 +6,7 @@ Player::Player()
 {
 	draw = true;
 	jump = false;
-	state = JUMP;
+	state = DEFAULTS;
 	jumpCount = 0;
 	fallCount = 0;
 }
@@ -35,8 +35,9 @@ int Player::Jump()
 			jumpCount = 0;
 			state = FALL;
 		}
+		return 0;
 	}
-	return 0;
+	return -1;
 }
 
 int Player::JudgeJump()
