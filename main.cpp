@@ -102,11 +102,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
         // プレイヤーがジャンプ中じゃなければ落下させる ( -1 = ジャンプしてない)
-        if (player.Jump() == -1)
-        {
-        }
-            player.Fall();
-            player.TouchBoxFall();
+        player.Jump();
+        player.Fall();
+        player.TouchBoxFall();
 
         // スペースキーでジャンプする
         if (CheckHitKey(KEY_INPUT_SPACE) == 1)
