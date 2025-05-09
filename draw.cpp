@@ -1,6 +1,5 @@
 #include "DxLib.h"
 #include "draw.h"
-#include "common.h"
 
 /// <summary>
 /// ƒvƒŒƒCƒ„[‰æ‘œ‚ğİ’è‚·‚é
@@ -28,7 +27,7 @@ Draw::~Draw()
 /// ‚Æ‚°‚ğ•`‚­
 /// </summary>
 /// <returns></returns>
-int DrawThorns()
+int Draw::DrawThorns()
 {
 	// ‚Æ‚°‚Ì‰¡•(•K‚¸2‚Ì”{”‚É‚·‚é‚±‚Æ)(ŒÅ’è)
 	const int width = RATIO_X * 10;
@@ -91,7 +90,7 @@ int DrawThorns()
 /// <param name="width">‰¡•‚Ì”¼•ª</param>
 /// <param name="height">c•‚Ì”¼•ª</param>
 /// <returns></returns>
-int DrawRectangle(const bool drawBox, const int x = RATIO_X * 15, const int y = RATIO_Y * 55, const int width = RATIO_X * 15 , const int height = RATIO_Y * 5)
+int Draw::DrawRectangle (const bool drawBox, const int x, const int y, const int width, const int height)
 {
 	if (drawBox)
 	{
@@ -113,7 +112,7 @@ int DrawRectangle(const bool drawBox, const int x = RATIO_X * 15, const int y = 
 /// <param name="y"></param>
 /// <param name="gHandle"></param>
 /// <returns></returns>
-int DrawPlayerCharacter(const int gHandle, const bool drawPlayer, const int x = SCREEN_SIZE_X / 2, const int y = SCREEN_SIZE_Y / 2 - RATIO_X * RATIO_Y * 2, const int halfSize = RATIO_X * RATIO_Y * 2)
+int Draw::DrawPlayerCharacter (const bool drawPlayer, const int x, const int y, const int halfSize)
 {
 	if (drawPlayer)
 	{
@@ -133,28 +132,30 @@ int DrawPlayerCharacter(const int gHandle, const bool drawPlayer, const int x = 
 	return 0;
 }
 
-int Draw::DrawingScreen(const bool drawBox1, const bool drawBox2,
-	const int box1X, const int box1Y, const int box2X, const int box2Y,
-	const bool drawPlayer, const int playerX, const int playerY)
-{
-	// ‚Æ‚°‚ğ•`‚­
-	if (DrawThorns() != 0) return ERROR_OCCURRED;
 
-	// ‹éŒ`1‚ğ•`‚­
-	if (drawBox1)
-	{
-		if (DrawRectangle(drawBox1, box1X, box1Y) != 0) return ERROR_OCCURRED;
-	}
-	// ‹éŒ`2‚ğ•`‚­
-	if (drawBox2)
-	{
-		if (DrawRectangle(drawBox2, box2X, box2Y) != 0) return ERROR_OCCURRED;
-	}
-	// ‹éŒ`3‚ğ•`‚­
-	if (DrawRectangle(true , SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2 + RATIO_Y * 5) != 0) return ERROR_OCCURRED;
 
-	// ƒvƒŒƒCƒ„[‚ğ•`‰æ‚·‚é
-	if (DrawPlayerCharacter(gHandle, drawPlayer, playerX, playerY) != 0) return ERROR_OCCURRED;
-
-	return 0;
-}
+//int Draw::DrawingScreen(const bool drawBox1, const bool drawBox2,
+//	const int box1X, const int box1Y, const int box2X, const int box2Y,
+//	const bool drawPlayer, const int playerX, const int playerY)
+//{
+//	// ‚Æ‚°‚ğ•`‚­
+//	if (DrawThorns() != 0) return ERROR_OCCURRED;
+//
+//	// ‹éŒ`1‚ğ•`‚­
+//	if (drawBox1)
+//	{
+//		if (DrawRectangle(drawBox1, box1X, box1Y) != 0) return ERROR_OCCURRED;
+//	}
+//	// ‹éŒ`2‚ğ•`‚­
+//	if (drawBox2)
+//	{
+//		if (DrawRectangle(drawBox2, box2X, box2Y) != 0) return ERROR_OCCURRED;
+//	}
+//	// ‹éŒ`3‚ğ•`‚­
+//	if (DrawRectangle(true , SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2 + RATIO_Y * 5) != 0) return ERROR_OCCURRED;
+//
+//	// ƒvƒŒƒCƒ„[‚ğ•`‰æ‚·‚é
+//	if (DrawPlayerCharacter(gHandle, drawPlayer, playerX, playerY) != 0) return ERROR_OCCURRED;
+//
+//	return 0;
+//}

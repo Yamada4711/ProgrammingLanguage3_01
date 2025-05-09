@@ -6,6 +6,7 @@ class Box
 {
 public:
 	Box(int countS);
+	Box();
 	virtual ~Box();
 
 	/// <summary>
@@ -47,6 +48,18 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	std::tuple<int, int, int, int> GetBoxCoordinate();
+
+	/// <summary>
+	/// ƒvƒŒƒCƒ„[‚ÉG‚ê‚Ä‚¢‚é‚©”Û‚©‚ğæ“¾
+	/// </summary>
+	/// <returns></returns>
+	bool GetTouchPlayer();
+
+	/// <summary>
+	/// Œ»İ‚Ìstate‚ªERASE‚Å‚ ‚é‚©”Û‚©
+	/// </summary>
+	/// <returns></returns>
+	bool JudgeErase();
 
 private:
 	/// <summary>

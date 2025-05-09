@@ -19,6 +19,23 @@ Box::Box(int countS)
 	countStart = countS;
 }
 
+Box::Box()
+{
+	state = EMPTY;
+
+	// デフォルトでは矩形は右に向かって動く、とする
+	moveLeft = false;
+
+	// デフォルトでは矩形を描画しない
+	draw = false;
+
+	// デフォルトではプレイヤーに触れていない
+	touchPlayer = false;
+
+	// 起動するまでの時間を代入
+	countStart = 0;
+}
+
 Box::~Box()
 {
 
@@ -63,7 +80,7 @@ int Box::ManagementBox()
 		}
 		else if (vector2.x > SCREEN_SIZE_X + halfWidth || vector2.x < 0 - halfWidth)
 		{
-			state = ERASE;
+			state = EMPTY;
 		}
 		break;
 
@@ -83,10 +100,6 @@ int Box::ManagementBox()
 		{
 			return ERROR_OCCURRED;
 		}
-		else
-		{
-			state = EMPTY;
-		}
 		break;
 
 	default:
@@ -99,6 +112,8 @@ int Box::ManagementBox()
 
 int Box::GenerateBox()
 {
+	touchPlayer = false;
+
 	// 矩形の中央のｙ座標の位置を決める
 	vector2.y = rand() % 200 + 160;
 
@@ -188,4 +203,15 @@ std::tuple<int, int, int, int> Box::GetBoxCoordinate()
 	int rightDownY = vector2.y + halfHeight;
 
 	return std::forward_as_tuple(leftUpX, leftUpY, rightDownX, rightDownY);
+}
+
+bool Box::GetTouchPlayer()
+{
+	return touchPlayer;
+}
+
+bool Box::JudgeErase()
+{
+	if (state == ERASE) return true;
+	return false;
 }
