@@ -69,7 +69,7 @@ int Player::Fall()
 		}*/
 		vector2.y += fallPower;
 	}
-	else if (fallCount != 0) fallCount = 0;
+	//else if (fallCount != 0) fallCount = 0;
 	return 0;
 }
 
@@ -89,8 +89,8 @@ bool Player::JudgeTouchBox(Box& box)
 	// 横の当たり判定
 	// ジャンプ動作中は当たり判定が発動しないようにする
 	// 空中ジャンプはありにしておく(二段ジャンプは禁止)
-	if ((rightDownY <= boxLeftUpY + 5 && rightDownY >= boxLeftUpY - 2) &&
-		(leftUpX <= boxRightDownX - 3 && rightDownX >= boxLeftUpX + 3) &&
+	if ((rightDownY <= boxLeftUpY + RATIO_Y && rightDownY >= boxLeftUpY) &&
+		(leftUpX <= boxRightDownX - RATIO_X * 4 && rightDownX >= boxLeftUpX + RATIO_X * 4) &&
 		state != JUMP && state != DEFAULTS)
 	{
 		if (jump)
